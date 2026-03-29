@@ -42,6 +42,20 @@ document.getElementById("correctBtn").onclick = () => handleAnswer(true);
 document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
 
+// Initialize first question on page load
+window.addEventListener("DOMContentLoaded", () => {
+  questionText.textContent = questions[0].text;
+  updateTimer();
+});
+
+// Add Start button handler
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn) {
+    startBtn.onclick = startRound;
+  }
+});
+
 function startRound() {
   time = 20; running = true; bgMusic.play(); startTimer();
 }
@@ -50,7 +64,7 @@ function startTimer() {
   clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     if(time>0 && running){ time--; updateTimer(); }
-    else if(time===0 && running){ running=false; incorrect.play(); clearInterval(timerInterval); }
+    else if(time===0 && running){ running=false; incorrect.play(); clearInterval(timerInterval); nextQuestion(); }
   },1000);
 }
 
@@ -63,7 +77,9 @@ function updateTimer() {
 function handleAnswer(ans) {
   const correctAns = questions[index].answer;
   if(ans===correctAns){ correct.play(); if(responder==="guest") scoreGuest++; else scorePlayer++; } else incorrect.play();
-  running=false; updateScores();
+  running=false; updateScores(); 
+  clearInterval(timerInterval);
+  setTimeout(nextQuestion, 1500);
 }
 
 function updateScores(){
@@ -87,6 +103,7 @@ function spinWheel(){
     clearInterval(interval); roulette.pause(); roulette.currentTime=0;
     const selected = players[(i-1)%players.length]; currentPlayer=selected;
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`; correct.play();
+    startRound();
   },2000);
 }
 
