@@ -61,10 +61,26 @@ function updateScores(){ scoreGuestEl.textContent=scoreGuest; scorePlayerEl.text
 function nextQuestion(){ if(index<questions.length-1){ index++; questionText.textContent=questions[index].text; time=20; updateTimer(); running=false; }
   else showWinner(); }
 
-function spinWheel(){ if(players.length===0) return; let i=0; roulette.play();
-  const interval=setInterval(()=>{ currentPlayer=players[i%players.length]; currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; i++; },80);
-  setTimeout(()=>{ clearInterval(interval); roulette.pause(); roulette.currentTime=0; const selected=players[(i-1)%players.length]; currentPlayer=selected;
-  currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; correct.play(); },2000); }
+function spinWheel(){ 
+  if(players.length===0) return; 
+  let i=0; 
+  roulette.play();
+  const interval=setInterval(()=>{ 
+    currentPlayer=players[i%players.length]; 
+    currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; 
+    i++; 
+  },80);
+  setTimeout(()=>{ 
+    clearInterval(interval); 
+    roulette.pause(); 
+    roulette.currentTime=0; 
+    const selected=players[(i-1)%players.length]; 
+    currentPlayer=selected;
+    currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; 
+    players.splice(players.indexOf(selected), 1); // REMOVE the selected player
+    correct.play(); 
+  },2000); 
+}
 
 function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gewinnt!":scorePlayer>scoreGuest?"Der Spieler gewinnt!":"Unentschieden!"; winnerEl.classList.remove("hidden"); restartBtn.classList.remove("hidden"); }
 
