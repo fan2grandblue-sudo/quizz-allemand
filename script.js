@@ -97,12 +97,3 @@ function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gew
 
 function restartGame(){ index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
   questionText.textContent="Klicke Start"; currentPlayerEl.textContent="Aktueller Spieler : -"; winnerEl.classList.add("hidden"); restartBtn.classList.add("hidden"); }
-
-function restartGame(){
-  players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
-  index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
-  questionText.textContent="Klicke Start"; 
-  currentPlayerEl.textContent="Aktueller Spieler : -"; 
-  winnerEl.classList.add("hidden"); 
-  restartBtn.classList.add("hidden"); 
-}
