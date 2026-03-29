@@ -10,18 +10,6 @@ const questions = [
   { text: "Bei den Olympischen Spielen 2021 in Tokio nahmen 4.500\n Sportler aus 160 Ländern in 23 Sportarten teil.", answer: true },
   { text: "Im Jahr 2021 gab es weniger als 20 Sportarten", answer: false }
 ];
-const questions = [
-  { text: "Berlin ist die Hauptstadt von Deutschland", answer: true },
-  { text: "Der Euro wird in Deutschland nicht benutzt", answer: false },
-  { text: "Goethe war ein deutscher Schriftsteller", answer: true },
-  { text: "Hamburg liegt in Österreich", answer: false },
-  { text: "Die offizielle Sprache ist Deutsch", answer: true },
-  { text: "München liegt im Norden", answer: false },
-  { text: "Deutschland hat 16 Bundesländer", answer: true },
-  { text: "Der Rhein fließt durch Deutschland", answer: true },
-  { text: "Die Hauptstadt ist München", answer: false },
-  { text: "Deutschland liegt in Europa", answer: true }
-];
 
 const players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
 
