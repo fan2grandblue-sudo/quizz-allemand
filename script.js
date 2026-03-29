@@ -41,6 +41,7 @@ document.getElementById("spinBtn").onclick = spinWheel;
 document.getElementById("correctBtn").onclick = () => handleAnswer(true);
 document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
+document.getElementById("startBtn").onclick = startRound;
 
 function startRound(){ time=20; running=true; bgMusic.play(); startTimer(); }
 function startTimer(){ clearInterval(timerInterval); timerInterval=setInterval(()=>{
