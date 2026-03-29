@@ -1,3 +1,4 @@
+console.log("Start button:", document.getElementById("startBtn"));
 const questions = [
   { text: "Die ersten Paralympischen Spiele fanden 1960 statt.", answer: true },
   { text: "Im Jahr 1960 nahmen 23 Länder an den Paralympischen Spielen teil.", answer: true },
