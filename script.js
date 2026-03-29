@@ -1,5 +1,6 @@
 console.log("Start button:", document.getElementById("startBtn"));
 
+// QUESTIONS
 const questions = [
   { text: "Die ersten Paralympischen Spiele fanden 1960 statt.", answer: true },
   { text: "Im Jahr 1960 nahmen 23 Länder an den Paralympischen Spielen teil.", answer: true },
@@ -13,9 +14,11 @@ const questions = [
   { text: "Im Jahr 2021 gab es weniger als 20 Sportarten", answer: false }
 ];
 
+// PLAYERS
 const allPlayers = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
 let players = [...allPlayers];
 
+// GAME STATE
 let index = 0, time = 20, running = false;
 let currentPlayer = "-", responder = "guest";
 let scoreGuest = 0, scorePlayer = 0;
@@ -38,7 +41,6 @@ const responderEl = document.getElementById("responder");
 const winnerEl = document.getElementById("winner");
 const restartBtn = document.getElementById("restartBtn");
 const nextQuestionBtn = document.getElementById("nextQuestionBtn");
-nextQuestionBtn.onclick = nextRound; // calls the function to start next round
 
 // BUTTONS
 document.getElementById("guestBtn").onclick = () => { responder="guest"; responderEl.textContent="Antwortender: Gast"; };
@@ -48,12 +50,12 @@ document.getElementById("correctBtn").onclick = () => handleAnswer(true);
 document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
 document.getElementById("startBtn").onclick = startRound;
-
+nextQuestionBtn.onclick = () => nextRound(); // Next question button
 
 // START GAME
 function startRound(){
   index = 0;
-  players = [...allPlayers]; // reset players
+  players = [...allPlayers];
   scoreGuest = 0;
   scorePlayer = 0;
   currentPlayer = "-";
@@ -63,6 +65,7 @@ function startRound(){
   currentPlayerEl.textContent = "Aktueller Spieler : -";
   winnerEl.classList.add("hidden");
   restartBtn.classList.add("hidden");
+  nextQuestionBtn.classList.add("hidden");
   bgMusic.play();
 }
 
@@ -77,9 +80,12 @@ function startTimer(){
       running = false;
       incorrect.play();
       clearInterval(timerInterval);
-      // move to next question automatically
+
+      // increment index for next question
       index++;
-      nextRound();
+
+      // show "Next Question" button instead of automatic move
+      nextQuestionBtn.classList.remove("hidden");
     }
   }, 1000);
 }
@@ -106,6 +112,9 @@ function handleAnswer(ans){
   clearInterval(timerInterval);
   updateScores();
 
+  // increment index for next question
+  index++;
+
   // show "Next Question" button
   nextQuestionBtn.classList.remove("hidden");
 }
@@ -116,19 +125,18 @@ function updateScores(){
   scorePlayerEl.textContent = scorePlayer;
 }
 
-// PICK PLAYER AND SHOW QUESTION
+// NEXT ROUND (Pick Player + Show Question)
 function nextRound() {
-  // Hide the "Next Question" button at the start
-  nextQuestionBtn.classList.add("hidden");
+  nextQuestionBtn.classList.add("hidden"); // hide button at start
 
   // Check if all questions are done
-  if (index >= questions.length) {
+  if(index >= questions.length){
     showWinner();
     return;
   }
 
-  // Check if there are still players left
-  if (players.length === 0) {
+  // Check if players are left
+  if(players.length === 0){
     alert("Keine Spieler mehr übrig!");
     showWinner();
     return;
@@ -149,28 +157,25 @@ function nextRound() {
     roulette.pause();
     roulette.currentTime = 0;
 
-    // Pick a random player from remaining players
     const randomIndex = Math.floor(Math.random() * players.length);
     const selected = players[randomIndex];
+    players.splice(randomIndex, 1); // remove selected player
 
-    // Remove the selected player so they can't be picked again
-    players.splice(randomIndex, 1);
-
-    // Show the final selected player
     currentPlayer = selected;
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
     correct.play();
 
-    // Show the current question
+    // Show question
     questionText.textContent = questions[index].text;
 
-    // Reset and start the timer
+    // Reset and start timer
     time = 20;
     updateTimer();
     running = true;
     startTimer();
   }, 2000);
 }
+
 // SHOW WINNER
 function showWinner(){
   winnerEl.textContent = scoreGuest > scorePlayer ? "Der Gast gewinnt!" : scorePlayer > scoreGuest ? "Der Spieler gewinnt!" : "Unentschieden!";
@@ -191,4 +196,5 @@ function restartGame(){
   currentPlayerEl.textContent = "Aktueller Spieler : -";
   winnerEl.classList.add("hidden");
   restartBtn.classList.add("hidden");
+  nextQuestionBtn.classList.add("hidden");
 }
