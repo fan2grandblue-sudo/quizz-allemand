@@ -31,10 +31,10 @@ let scoreGuest=0, scorePlayer=0;
 let timerInterval=null;
 
 // SONS
-const bgMusic = new Audio("sounds/ambient.mp3"); bgMusic.loop=true; bgMusic.volume=0.3;
-const correct = new Audio("sounds/correct.mp3");
-const incorrect = new Audio("sounds/incorrect.mp3");
-const roulette = new Audio("sounds/roulette.mp3"); roulette.loop=true; roulette.volume=0.5;
+const bgMusic = new Audio("ambient.mp3"); bgMusic.loop=true; bgMusic.volume=0.3;
+const correct = new Audio("correct.mp3");
+const incorrect = new Audio("incorrect.mp3");
+const roulette = new Audio("roulette.mp3"); roulette.loop=true; roulette.volume=0.5;
 
 // ELEMENTS
 const questionText = document.getElementById("questionText");
