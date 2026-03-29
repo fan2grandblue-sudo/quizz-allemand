@@ -52,14 +52,37 @@ function startTimer(){ clearInterval(timerInterval); timerInterval=setInterval((
 function updateTimer(){ timerEl.textContent=`Zeit: ${time}s`; timerFill.style.width=(time/20)*100+"%";
   timerFill.style.background = time>10?"green":time>5?"yellow":"red"; }
 
-function handleAnswer(ans){ const correctAns=questions[index].answer;
-  if(ans===correctAns){ correct.play(); responder==="guest"?scoreGuest++:scorePlayer++; } else incorrect.play();
-  running=false; updateScores(); }
+function handleAnswer(ans){
+  const correctAns = questions[index].answer;
+
+  if(ans === correctAns){
+    correct.play();
+    responder === "guest" ? scoreGuest++ : scorePlayer++;
+  } else {
+    incorrect.play();
+  }
+
+  running = false;
+  updateScores();
+
+  // go to the next question automatically
+  nextQuestion();
+}
 
 function updateScores(){ scoreGuestEl.textContent=scoreGuest; scorePlayerEl.textContent=scorePlayer; }
 
-function nextQuestion(){ if(index<questions.length-1){ index++; questionText.textContent=questions[index].text; time=20; updateTimer(); running=false; }
-  else showWinner(); }
+function nextQuestion(){
+  if(index < questions.length - 1){
+    index++;
+    questionText.textContent = questions[index].text;
+    time = 20;
+    updateTimer();
+    running = true;
+    startTimer(); // start countdown for the next question
+  } else {
+    showWinner();
+  }
+}
 
 function spinWheel() {
   if (players.length === 0) return; // no players left
