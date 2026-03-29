@@ -1,4 +1,5 @@
 console.log("Start button:", document.getElementById("startBtn"));
+
 const questions = [
   { text: "Die ersten Paralympischen Spiele fanden 1960 statt.", answer: true },
   { text: "Im Jahr 1960 nahmen 23 Länder an den Paralympischen Spielen teil.", answer: true },
@@ -12,18 +13,19 @@ const questions = [
   { text: "Im Jahr 2021 gab es weniger als 20 Sportarten", answer: false }
 ];
 
-const players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
+const allPlayers = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
+let players = [...allPlayers];
 
-let index=0, time=20, running=false;
-let currentPlayer="-", responder="guest";
-let scoreGuest=0, scorePlayer=0;
-let timerInterval=null;
+let index = 0, time = 20, running = false;
+let currentPlayer = "-", responder = "guest";
+let scoreGuest = 0, scorePlayer = 0;
+let timerInterval = null;
 
-// SONS
-const bgMusic = new Audio("ambient.mp3"); bgMusic.loop=true; bgMusic.volume=0.3;
+// AUDIO
+const bgMusic = new Audio("ambient.mp3"); bgMusic.loop = true; bgMusic.volume = 0.3;
 const correct = new Audio("correct.mp3");
 const incorrect = new Audio("incorrect.mp3");
-const roulette = new Audio("roulette.mp3"); roulette.loop=true; roulette.volume=0.5;
+const roulette = new Audio("roulette.mp3"); roulette.loop = true; roulette.volume = 0.5;
 
 // ELEMENTS
 const questionText = document.getElementById("questionText");
@@ -36,25 +38,60 @@ const responderEl = document.getElementById("responder");
 const winnerEl = document.getElementById("winner");
 const restartBtn = document.getElementById("restartBtn");
 
+// BUTTONS
 document.getElementById("guestBtn").onclick = () => { responder="guest"; responderEl.textContent="Antwortender: Gast"; };
 document.getElementById("playerBtn").onclick = () => { responder="player"; responderEl.textContent="Antwortender: Spieler"; };
-document.getElementById("spinBtn").onclick = spinWheel;
+document.getElementById("spinBtn").onclick = nextRound;
 document.getElementById("correctBtn").onclick = () => handleAnswer(true);
 document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
 document.getElementById("startBtn").onclick = startRound;
 
-function startRound(){ time=20; running=true; questionText.textContent=questions[index].text; updateTimer(); bgMusic.play(); startTimer(); }
-function startTimer(){ clearInterval(timerInterval); timerInterval=setInterval(()=>{
-  if(time>0 && running){ time--; updateTimer(); }
-  else if(time===0 && running){ running=false; incorrect.play(); clearInterval(timerInterval); }
-},1000);}
-function updateTimer(){ timerEl.textContent=`Zeit: ${time}s`; timerFill.style.width=(time/20)*100+"%";
-  timerFill.style.background = time>10?"green":time>5?"yellow":"red"; }
+// START GAME
+function startRound(){
+  index = 0;
+  players = [...allPlayers]; // reset players
+  scoreGuest = 0;
+  scorePlayer = 0;
+  currentPlayer = "-";
+  running = false;
+  updateScores();
+  questionText.textContent = "Klicke Spin, um einen Spieler auszuwählen";
+  currentPlayerEl.textContent = "Aktueller Spieler : -";
+  winnerEl.classList.add("hidden");
+  restartBtn.classList.add("hidden");
+  bgMusic.play();
+}
 
+// TIMER
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if(time > 0 && running){
+      time--;
+      updateTimer();
+    } else if(time === 0 && running){
+      running = false;
+      incorrect.play();
+      clearInterval(timerInterval);
+      // move to next question automatically
+      index++;
+      nextRound();
+    }
+  }, 1000);
+}
+
+function updateTimer(){
+  timerEl.textContent = `Zeit: ${time}s`;
+  timerFill.style.width = (time / 20) * 100 + "%";
+  timerFill.style.background = time > 10 ? "green" : time > 5 ? "yellow" : "red";
+}
+
+// HANDLE ANSWER
 function handleAnswer(ans){
-  const correctAns = questions[index].answer;
+  if(!running) return;
 
+  const correctAns = questions[index].answer;
   if(ans === correctAns){
     correct.play();
     responder === "guest" ? scoreGuest++ : scorePlayer++;
@@ -65,32 +102,33 @@ function handleAnswer(ans){
   running = false;
   updateScores();
 
-  // go to the next question automatically
-  nextQuestion();
+  // move to next question
+  index++;
+  nextRound();
 }
 
-function updateScores(){ scoreGuestEl.textContent=scoreGuest; scorePlayerEl.textContent=scorePlayer; }
+// UPDATE SCORE DISPLAY
+function updateScores(){
+  scoreGuestEl.textContent = scoreGuest;
+  scorePlayerEl.textContent = scorePlayer;
+}
 
-function nextQuestion(){
-  if(index < questions.length - 1){
-    index++;
-    questionText.textContent = questions[index].text;
-    time = 20;
-    updateTimer();
-    running = true;
-    startTimer(); // start countdown for the next question
-  } else {
+// PICK PLAYER AND SHOW QUESTION
+function nextRound(){
+  if(index >= questions.length){
     showWinner();
+    return;
   }
-}
 
-function spinWheel() {
-  if (players.length === 0) return; // no players left
+  if(players.length === 0){
+    alert("Keine Spieler mehr übrig!");
+    showWinner();
+    return;
+  }
 
   roulette.play();
   let i = 0;
 
-  // show cycling animation
   const interval = setInterval(() => {
     currentPlayer = players[i % players.length];
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
@@ -102,21 +140,42 @@ function spinWheel() {
     roulette.pause();
     roulette.currentTime = 0;
 
-    // pick a random player from remaining players
+    // pick random player
     const randomIndex = Math.floor(Math.random() * players.length);
     const selected = players[randomIndex];
-
-    // remove the selected player so they can't be chosen again
     players.splice(randomIndex, 1);
 
-    // show the final selected player
     currentPlayer = selected;
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
-
     correct.play();
+
+    // show question
+    questionText.textContent = questions[index].text;
+    time = 20;
+    updateTimer();
+    running = true;
+    startTimer();
   }, 2000);
 }
-function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gewinnt!":scorePlayer>scoreGuest?"Der Spieler gewinnt!":"Unentschieden!"; winnerEl.classList.remove("hidden"); restartBtn.classList.remove("hidden"); }
 
-function restartGame(){ index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
-  questionText.textContent="Klicke Start"; currentPlayerEl.textContent="Aktueller Spieler : -"; winnerEl.classList.add("hidden"); restartBtn.classList.add("hidden"); }
+// SHOW WINNER
+function showWinner(){
+  winnerEl.textContent = scoreGuest > scorePlayer ? "Der Gast gewinnt!" : scorePlayer > scoreGuest ? "Der Spieler gewinnt!" : "Unentschieden!";
+  winnerEl.classList.remove("hidden");
+  restartBtn.classList.remove("hidden");
+}
+
+// RESTART GAME
+function restartGame(){
+  index = 0;
+  players = [...allPlayers];
+  scoreGuest = 0;
+  scorePlayer = 0;
+  currentPlayer = "-";
+  running = false;
+  updateScores();
+  questionText.textContent = "Klicke Start";
+  currentPlayerEl.textContent = "Aktueller Spieler : -";
+  winnerEl.classList.add("hidden");
+  restartBtn.classList.add("hidden");
+}
