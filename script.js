@@ -10,7 +10,7 @@ const questions = [
   { text: "Bei den Olympischen Spielen 2021 in Tokio nahmen 4.500\n Sportler aus 160 Ländern in 23 Sportarten teil.", answer: true },
   { text: "Im Jahr 2021 gab es weniger als 20 Sportarten", answer: false }
 ];
-const players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
+const players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"]; 
 let availablePlayers = [...players];
 
 let index=0, time=20, running=false;
@@ -69,4 +69,4 @@ function spinWheel(){
 function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gewinnt!":scorePlayer>scoreGuest?"Der Spieler gewinnt!":"Unentschieden!"; winnerEl.classList.remove("hidden"); restartBtn.classList.remove("hidden"); }
 
 function restartGame(){ index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; availablePlayers=[...players]; updateScores();
-  questionText.textContent="Klicke Start"; currentPlayerEl.textContent="Aktueller Spieler : -"; winnerEl.classList.add("hidden"); restartBtn.classList.add("hidden"); }
+  questionText.textContent=questions[0].text; currentPlayerEl.textContent="Aktueller Spieler : -"; winnerEl.classList.add("hidden"); restartBtn.classList.add("hidden"); }
