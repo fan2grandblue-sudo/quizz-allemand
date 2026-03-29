@@ -10,31 +10,30 @@ body {
 
 /* Vidéo de fond */
 #backgroundVideo {
-  position: fixed;   /* reste fixe */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* couvre tout l'écran */
-  z-index: -1;       /* derrière tout le contenu */
-  pointer-events: none; /* clics passent à travers */
-  background: black; /* fond noir si vidéo non chargée */
+  object-fit: cover;
+  z-index: -2; /* PLUS BAS que tout */
+  pointer-events: none;
 }
 
 /* Overlay sombre pour lisibilité */
 body::before {
   content: "";
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); /* ajuster l'opacité si besoin */
-  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: -1; /* ENTRE la vidéo et le contenu */
 }
-
 .container {
-  padding: 20px;
-  position: relative; /* pour être au-dessus de la vidéo et overlay */
-  z-index: 1;
+  position: relative;
+  z-index: 1; /* AU-DESSUS de tout */
 }
 
 h1 {
