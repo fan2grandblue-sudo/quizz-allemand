@@ -61,38 +61,38 @@ function updateScores(){ scoreGuestEl.textContent=scoreGuest; scorePlayerEl.text
 function nextQuestion(){ if(index<questions.length-1){ index++; questionText.textContent=questions[index].text; time=20; updateTimer(); running=false; }
   else showWinner(); }
 
-function spinWheel(){ 
-  if(players.length === 0) return; // no players left
+function spinWheel() {
+  if (players.length === 0) return; // no players left
 
   roulette.play();
   let i = 0;
-  
-  const interval = setInterval(() => { 
-    currentPlayer = players[i % players.length]; 
-    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`; 
-    i++; 
+
+  // show cycling animation
+  const interval = setInterval(() => {
+    currentPlayer = players[i % players.length];
+    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
+    i++;
   }, 80);
 
-  setTimeout(() => { 
-    clearInterval(interval); 
-    roulette.pause(); 
-    roulette.currentTime = 0; 
+  setTimeout(() => {
+    clearInterval(interval);
+    roulette.pause();
+    roulette.currentTime = 0;
 
-    // select the final player
-    const selected = players[(i - 1) % players.length]; 
+    // pick a random player from remaining players
+    const randomIndex = Math.floor(Math.random() * players.length);
+    const selected = players[randomIndex];
+
+    // remove the selected player so they can't be chosen again
+    players.splice(randomIndex, 1);
+
+    // show the final selected player
     currentPlayer = selected;
-    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`; 
+    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
 
-    // REMOVE the selected player from the list
-    const indexToRemove = players.indexOf(selected);
-    if(indexToRemove > -1){
-      players.splice(indexToRemove, 1);
-    }
-
-    correct.play(); 
-  }, 2000); 
+    correct.play();
+  }, 2000);
 }
-
 function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gewinnt!":scorePlayer>scoreGuest?"Der Spieler gewinnt!":"Unentschieden!"; winnerEl.classList.remove("hidden"); restartBtn.classList.remove("hidden"); }
 
 function restartGame(){ index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
