@@ -62,27 +62,47 @@ function nextQuestion(){ if(index<questions.length-1){ index++; questionText.tex
   else showWinner(); }
 
 function spinWheel(){ 
-  if(players.length===0) return; 
-  let i=0; 
+  if(players.length === 0) return; // no players left
+
   roulette.play();
-  const interval=setInterval(()=>{ 
-    currentPlayer=players[i%players.length]; 
-    currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; 
+  let i = 0;
+  
+  const interval = setInterval(() => { 
+    currentPlayer = players[i % players.length]; 
+    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`; 
     i++; 
-  },80);
-  setTimeout(()=>{ 
+  }, 80);
+
+  setTimeout(() => { 
     clearInterval(interval); 
     roulette.pause(); 
-    roulette.currentTime=0; 
-    const selected=players[(i-1)%players.length]; 
-    currentPlayer=selected;
-    currentPlayerEl.textContent=`Aktueller Spieler : ${currentPlayer}`; 
-    players.splice(players.indexOf(selected), 1); // REMOVE the selected player
+    roulette.currentTime = 0; 
+
+    // select the final player
+    const selected = players[(i - 1) % players.length]; 
+    currentPlayer = selected;
+    currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`; 
+
+    // REMOVE the selected player from the list
+    const indexToRemove = players.indexOf(selected);
+    if(indexToRemove > -1){
+      players.splice(indexToRemove, 1);
+    }
+
     correct.play(); 
-  },2000); 
+  }, 2000); 
 }
 
 function showWinner(){ winnerEl.textContent=scoreGuest>scorePlayer?"Der Gast gewinnt!":scorePlayer>scoreGuest?"Der Spieler gewinnt!":"Unentschieden!"; winnerEl.classList.remove("hidden"); restartBtn.classList.remove("hidden"); }
 
 function restartGame(){ index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
   questionText.textContent="Klicke Start"; currentPlayerEl.textContent="Aktueller Spieler : -"; winnerEl.classList.add("hidden"); restartBtn.classList.add("hidden"); }
+
+function restartGame(){
+  players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
+  index=0; time=20; running=false; scoreGuest=0; scorePlayer=0; currentPlayer="-"; updateScores();
+  questionText.textContent="Klicke Start"; 
+  currentPlayerEl.textContent="Aktueller Spieler : -"; 
+  winnerEl.classList.add("hidden"); 
+  restartBtn.classList.add("hidden"); 
+}
