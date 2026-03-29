@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Fragen für einen Champion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Fragen für einen Champion</h1>
+
+    <div class="scores">
+      <div>Gast ⭐ : <span id="scoreGuest">0</span></div>
+      <div>Spieler 🎓 : <span id="scorePlayer">0</span></div>
+    </div>
+
+    <div id="currentPlayer">Aktueller Spieler : -</div>
+    <div id="responder">Antwortender: Gast</div>
+
+    <div class="buttons">
+      <button id="guestBtn">Gast antwortet</button>
+      <button id="playerBtn">Spieler antwortet</button>
+    </div>
+
+    <button id="spinBtn">🎡 Drehen</button>
+
+    <div id="questionBox">
+      <h2 id="questionText">Klicke Start</h2>
+      <div class="timer-bar">
+        <div id="timerFill"></div>
+      </div>
+      <p id="timer">Zeit: 20s</p>
+    </div>
+
+    <div class="answerButtons">
+      <button id="correctBtn">✅ Richtig</button>
+      <button id="wrongBtn">❌ Falsch</button>
+    </div>
+
+    <div id="winner" class="hidden"></div>
+    <button id="restartBtn" class="hidden">Neustart</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
