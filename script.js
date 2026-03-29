@@ -1,14 +1,14 @@
 const questions = [
-  { text: "Berlin ist die Hauptstadt von Deutschland", answer: true },
-  { text: "Der Euro wird in Deutschland nicht benutzt", answer: false },
-  { text: "Goethe war ein deutscher Schriftsteller", answer: true },
-  { text: "Hamburg liegt in Österreich", answer: false },
-  { text: "Die offizielle Sprache ist Deutsch", answer: true },
-  { text: "München liegt im Norden", answer: false },
-  { text: "Deutschland hat 16 Bundesländer", answer: true },
-  { text: "Der Rhein fließt durch Deutschland", answer: true },
-  { text: "Die Hauptstadt ist München", answer: false },
-  { text: "Deutschland liegt in Europa", answer: true }
+  { text: "Die ersten Paralympischen Spiele fanden 1960 statt.", answer: true },
+  { text: "Im Jahr 1960 nahmen 23 Länder an den Paralympischen Spielen teil.", answer: true },
+  { text: "Die ersten Paralympischen Spiele fanden in Paris statt.", answer: false },
+  { text: "Im Jahr 1960 gab es bereits mehr als 1 000 Sportler.", answer: false },
+  { text: "Die Paralympischen Winterspiele fanden erstmals 1992 statt.", answer: false },
+  { text: "Seit 1988 finden die Paralympischen Spiele in der\n selben Stadt statt wie die Olympischen Spiele.", answer: true },
+  { text: "Die Paralympischen Spiele finden vor den Olympischen Spielen statt.", answer: false },
+  { text: "Die Paralympischen Spiele in Tokio fanden 2020 statt.", answer: false },
+  { text: "Bei den Olympischen Spielen 2021 in Tokio nahmen 4.500\n Sportler aus 160 Ländern in 23 Sportarten teil.", answer: true },
+  { text: "Im Jahr 2021 gab es weniger als 20 Sportarten", answer: false }
 ];
 
 const players = ["Noemie","Gabrielle","Lucas","Péricles","Manon","Ferdinand","Mila","Quentin.B","Margaux.D","Eva"];
@@ -19,10 +19,10 @@ let scoreGuest = 0, scorePlayer = 0;
 let timerInterval = null;
 
 // SONS
-const bgMusic = new Audio("sounds/ambient.mp3"); bgMusic.loop = true; bgMusic.volume = 0.3;
-const correct = new Audio("sounds/correct.mp3");
-const incorrect = new Audio("sounds/incorrect.mp3");
-const roulette = new Audio("sounds/roulette.mp3"); roulette.loop = true; roulette.volume = 0.5;
+const bgMusic = new Audio("ambient.mp3"); bgMusic.loop = true; bgMusic.volume = 0.5;
+const correct = new Audio("correct.mp3");
+const incorrect = new Audio("incorrect.mp3");
+const roulette = new Audio("roulette.mp3"); roulette.loop = true; roulette.volume = 0.7;
 
 // ELEMENTS
 const questionText = document.getElementById("questionText");
