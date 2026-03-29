@@ -1,47 +1,53 @@
-body {
-  background: linear-gradient(to bottom right, #000, #800000);
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
+html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+  overflow: hidden;
 }
 
-/* Vidéo de fond */
+/* 🎬 Vidéo plein écran */
 #backgroundVideo {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
-  z-index: -2; /* PLUS BAS que tout */
-  pointer-events: none;
+  z-index: -2;
 }
 
-/* Overlay sombre pour lisibilité */
-body::before {
-  content: "";
+/* 🌑 Overlay sombre */
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: -1; /* ENTRE la vidéo et le contenu */
-}
-.container {
-  position: relative;
-  z-index: 1; /* AU-DESSUS de tout */
+  background: rgba(0,0,0,0.55);
+  z-index: -1;
 }
 
+/* 📦 Contenu */
+.container {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+/* ✨ TITRE GLOW */
 h1 {
   font-size: 3rem;
   color: #FFD700;
-  text-shadow: 2px 2px 5px black;
+  text-shadow:
+    0 0 10px #FFD700,
+    0 0 20px #FFA500,
+    0 0 40px #FF8C00;
 }
 
+/* ⭐ Scores */
 .scores {
   display: flex;
   justify-content: center;
@@ -50,16 +56,15 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* 🔵 Joueur actuel */
 #currentPlayer {
   font-size: 1.8rem;
   color: #00FFFF;
   animation: pulse 1s infinite;
+  text-shadow: 0 0 10px #00FFFF;
 }
 
-#responder {
-  margin-bottom: 10px;
-}
-
+/* 🎯 Boutons glow */
 button {
   padding: 10px 20px;
   margin: 5px;
@@ -67,23 +72,29 @@ button {
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  background: #111;
+  color: white;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  transition: 0.3s;
 }
 
 button:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 20px #FFD700;
 }
 
+/* ❓ Question box */
 #questionBox {
-  background: white;
+  background: rgba(255,255,255,0.95);
   color: black;
   border-radius: 25px;
   padding: 20px;
   margin: 20px auto;
   max-width: 500px;
-  text-align: center;
+  box-shadow: 0 0 25px rgba(255,255,255,0.4);
 }
 
+/* ⏱ Timer */
 .timer-bar {
   background: #333;
   height: 20px;
@@ -94,21 +105,23 @@ button:hover {
 
 #timerFill {
   height: 100%;
-  background: green;
   width: 100%;
-  transition: width 0.5s, background 0.5s;
+  transition: 0.5s;
 }
 
+/* 🎮 boutons réponses */
 .answerButtons button {
   font-size: 1.5rem;
   padding: 15px 30px;
   border-radius: 25px;
 }
 
+/* 🔄 caché */
 .hidden {
   display: none;
 }
 
+/* 💓 animation */
 @keyframes pulse {
   0% { opacity: 1; }
   50% { opacity: 0.5; }
