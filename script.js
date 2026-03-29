@@ -37,6 +37,8 @@ const currentPlayerEl = document.getElementById("currentPlayer");
 const responderEl = document.getElementById("responder");
 const winnerEl = document.getElementById("winner");
 const restartBtn = document.getElementById("restartBtn");
+const nextQuestionBtn = document.getElementById("nextQuestionBtn");
+nextQuestionBtn.onclick = nextRound; // calls the function to start next round
 
 // BUTTONS
 document.getElementById("guestBtn").onclick = () => { responder="guest"; responderEl.textContent="Antwortender: Gast"; };
@@ -46,6 +48,7 @@ document.getElementById("correctBtn").onclick = () => handleAnswer(true);
 document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
 document.getElementById("startBtn").onclick = startRound;
+
 
 // START GAME
 function startRound(){
@@ -100,11 +103,11 @@ function handleAnswer(ans){
   }
 
   running = false;
+  clearInterval(timerInterval);
   updateScores();
 
-  // move to next question
-  index++;
-  nextRound();
+  // show "Next Question" button
+  nextQuestionBtn.classList.remove("hidden");
 }
 
 // UPDATE SCORE DISPLAY
@@ -114,50 +117,60 @@ function updateScores(){
 }
 
 // PICK PLAYER AND SHOW QUESTION
-function nextRound(){
-  if(index >= questions.length){
+function nextRound() {
+  // Hide the "Next Question" button at the start
+  nextQuestionBtn.classList.add("hidden");
+
+  // Check if all questions are done
+  if (index >= questions.length) {
     showWinner();
     return;
   }
 
-  if(players.length === 0){
+  // Check if there are still players left
+  if (players.length === 0) {
     alert("Keine Spieler mehr übrig!");
     showWinner();
     return;
   }
 
+  // Start roulette animation
   roulette.play();
   let i = 0;
-
   const interval = setInterval(() => {
     currentPlayer = players[i % players.length];
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
     i++;
   }, 80);
 
+  // After 2 seconds, pick a random player and show question
   setTimeout(() => {
     clearInterval(interval);
     roulette.pause();
     roulette.currentTime = 0;
 
-    // pick random player
+    // Pick a random player from remaining players
     const randomIndex = Math.floor(Math.random() * players.length);
     const selected = players[randomIndex];
+
+    // Remove the selected player so they can't be picked again
     players.splice(randomIndex, 1);
 
+    // Show the final selected player
     currentPlayer = selected;
     currentPlayerEl.textContent = `Aktueller Spieler : ${currentPlayer}`;
     correct.play();
 
-    // show question
+    // Show the current question
     questionText.textContent = questions[index].text;
+
+    // Reset and start the timer
     time = 20;
     updateTimer();
     running = true;
     startTimer();
   }, 2000);
 }
-
 // SHOW WINNER
 function showWinner(){
   winnerEl.textContent = scoreGuest > scorePlayer ? "Der Gast gewinnt!" : scorePlayer > scoreGuest ? "Der Spieler gewinnt!" : "Unentschieden!";
