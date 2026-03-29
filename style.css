@@ -5,6 +5,28 @@ body {
   text-align: center;
 }
 
+/* Vidéo de fond */
+#backgroundVideo {
+  position: fixed;   /* reste fixe */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* couvre tout l'écran */
+  z-index: -1;       /* derrière tout le contenu */
+  pointer-events: none; /* les clics passent à travers */
+}
+
+/* Optionnel : overlay sombre pour lisibilité */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 0;
+}
+
 .container { padding: 20px; }
 
 h1 { font-size: 3rem; color: #FFD700; text-shadow: 2px 2px 5px black; }
