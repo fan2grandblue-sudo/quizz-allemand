@@ -43,7 +43,7 @@ document.getElementById("wrongBtn").onclick = () => handleAnswer(false);
 restartBtn.onclick = restartGame;
 document.getElementById("startBtn").onclick = startRound;
 
-function startRound(){ time=20; running=true; bgMusic.play(); startTimer(); }
+function startRound(){ time=20; running=true; questionText.textContent=questions[index].text; updateTimer(); bgMusic.play(); startTimer(); }
 function startTimer(){ clearInterval(timerInterval); timerInterval=setInterval(()=>{
   if(time>0 && running){ time--; updateTimer(); }
   else if(time===0 && running){ running=false; incorrect.play(); clearInterval(timerInterval); }
